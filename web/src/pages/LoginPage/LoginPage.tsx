@@ -1,19 +1,13 @@
 import { useRef } from 'react'
 import { useEffect } from 'react'
 
-import {
-  Form,
-  Label,
-  TextField,
-  PasswordField,
-  Submit,
-  FieldError,
-} from '@redwoodjs/forms'
+import { Form, Label, Submit, FieldError, EmailField } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import ShowHidePassword from 'src/components/ShowHidePassword/ShowHidePassword'
 
 const LoginPage = () => {
   const { isAuthenticated, logIn } = useAuth()
@@ -50,54 +44,60 @@ const LoginPage = () => {
 
       <main className="rw-main">
         <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <Form onSubmit={onSubmit}>
-          <div className="field">
-            <Label name="email" errorClassName="error">
-              Email
-            </Label>
-            <TextField
-              name="email"
-              errorClassName="rw-input rw-input-error"
-              ref={emailRef}
-              validation={{
-                required: {
-                  value: true,
-                  message: 'Email is required',
-                },
-              }}
-            />
 
-            <FieldError name="email" className="error-message" />
-          </div>
+        <div className="mx-auto max-w-[660px]">
+          <Form onSubmit={onSubmit} className="mb-10">
+            <div className="field">
+              <Label name="email" errorClassName="error">
+                Email
+              </Label>
+              <EmailField
+                name="email"
+                errorClassName="error"
+                placeholder=""
+                ref={emailRef}
+                validation={{
+                  required: {
+                    value: true,
+                    message: 'Email is required',
+                  },
+                }}
+              />
 
-          <div className="field">
-            <Label name="password" errorClassName="error">
-              Password
-            </Label>
-            <PasswordField
-              name="password"
-              errorClassName="rw-input rw-input-error"
-              autoComplete="current-password"
-              validation={{
-                required: {
-                  value: true,
-                  message: 'Password is required',
-                },
-              }}
-            />
+              <FieldError name="email" className="error-message" />
+            </div>
 
-            <FieldError name="password" className="error-message" />
-          </div>
+            <div className="field">
+              <ShowHidePassword
+                label="Password"
+                name="password"
+                errorClassName="error"
+                autoComplete="current-password"
+                placeholder=""
+                validation={{
+                  required: {
+                    value: true,
+                    message: 'Password is required',
+                  },
+                }}
+              />
 
-          <Submit>Login</Submit>
-        </Form>
+              <FieldError name="password" className="error-message" />
+            </div>
 
-        <div>
-          <Link to={routes.forgotPassword()} className="rw-forgot-link">
+            <Submit>Login</Submit>
+          </Form>
+        </div>
+
+        <div className="text-center text-white">
+          <Link
+            to={routes.forgotPassword()}
+            className="underline hover:no-underline"
+          >
             Forgot Password?
           </Link>
           *
-          <Link to={routes.signup()} className="rw-link">
+          <Link to={routes.signup()} className="underline hover:no-underline">
             Need an account?
           </Link>
         </div>
